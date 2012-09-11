@@ -121,6 +121,7 @@ var handlers = {
 function createServer(args) {
   app = express.createServer();
   app.use(express.bodyParser());
+  app.use(express.static(__dirname + '/public'));
   app.set('view engine', 'ejs');
 
   app.get('/' + endpoints.main, handlers.main);

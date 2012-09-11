@@ -1,9 +1,20 @@
 <% if(authorized) { %>
   <p>
-    Authorized access granted for <%= name %>. <a href="<%= logoutEndpoint %>">Remove Authorization</a>
+    Logged in as <%= name %>
+  </p>
+  <p class="action">
+    <a class="button" href="<%= logoutEndpoint %>">Logout</a>
+  </p>
+  <p class="note">
+    Note: logging out does not revoke access to Rdio.
+    <a href="http://www.rdio.com/settings/external/">Visit your
+    Rdio Settings page</a> to revoke access.
   </p>
 <% } else { %>
   <p>
-    You have not authorized PandoRdio. <a href="<%= loginEndpoint %>">Authorize Now</a>
+    You have not authorized PandoRdio
+  </p>
+  <p class="action">
+    <a class="button" href="<%= loginEndpoint %>">Authorize Now</a>
   </p>
 <% } %>
