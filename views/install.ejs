@@ -1,0 +1,13 @@
+<button onclick="chrome.webstore.install()" id="install-button">
+  Add to Google Chrome
+</button>
+
+<p id="installed">PandoRdio has been installed!</p>
+
+<script>
+  if (chrome.app.isInstalled) {
+    document.getElementById('install-button').style.display = 'none';
+  } else {
+    document.getElementById('installed').style.display = 'none';
+  }
+</script>

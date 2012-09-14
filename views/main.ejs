@@ -1,34 +1,21 @@
-<button onclick="chrome.webstore.install()" id="install-button">
-  Add to Google Chrome
-</button>
+<% if(authorized) { %>
+  <p>
+    Logged in as <%= name %>
+  </p>
+  <p class="action">
+    <a class="button" href="<%= logoutEndpoint %>">Logout</a>
+  </p>
+  <p class="note">
+    Note: logging out does not revoke access to Rdio.
+    <a href="http://www.rdio.com/settings/external/">Visit your
+    Rdio Settings page</a> to revoke access.
+  </p>
+<% } else { %>
+  <p>
+    You have not authorized PandoRdio
+  </p>
+  <p class="action">
+    <a class="button" href="<%= loginEndpoint %>">Authorize Now</a>
+  </p>
+<% } %>
 
-<div id="authorize-actions">
-  <% if(authorized) { %>
-    <p>
-      Logged in as <%= name %>
-    </p>
-    <p class="action">
-      <a class="button" href="<%= logoutEndpoint %>">Logout</a>
-    </p>
-    <p class="note">
-      Note: logging out does not revoke access to Rdio.
-      <a href="http://www.rdio.com/settings/external/">Visit your
-      Rdio Settings page</a> to revoke access.
-    </p>
-  <% } else { %>
-    <p>
-      You have not authorized PandoRdio
-    </p>
-    <p class="action">
-      <a class="button" href="<%= loginEndpoint %>">Authorize Now</a>
-    </p>
-  <% } %>
-</div>
-
-<script>
-  if (chrome.app.isInstalled) {
-    document.getElementById('install-button').style.display = 'none';
-  } else {
-    document.getElementById('authorize-actions').style.display = 'none';
-  }
-</script>

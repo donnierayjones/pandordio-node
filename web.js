@@ -17,6 +17,7 @@ var getRequestItems = function(req) {
 
 var endpoints = {
   main: '',
+  install: 'install',
   loginBegin: 'auth/begin',
   loginEnd: 'auth/end',
   logout: 'auth/logout'
@@ -46,6 +47,11 @@ var handlers = {
         logoutEndpoint: endpoints.logout
       });
     });
+  },
+
+  install: function(req, res) {
+    res.contentType('text/html');
+    res.render('install');
   },
 
   /** Handler to begin the login process. */
@@ -125,6 +131,7 @@ function createServer(args) {
   app.set('view engine', 'ejs');
 
   app.get('/' + endpoints.main, handlers.main);
+  app.get('/' + endpoints.install, handlers.install);
   app.get('/' + endpoints.loginBegin, handlers.loginBegin);
   app.get('/' + endpoints.loginEnd, handlers.loginEnd);
   app.get('/' + endpoints.logout, handlers.logout);
