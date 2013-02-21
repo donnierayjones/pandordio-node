@@ -1,4 +1,5 @@
 var express = require('express');
+var partials = require('express-partials');
 var Rdio = require('rdio-node').Rdio;
 var config = require('./config_provider');
 var CookieStore = require('./cookie-store').CookieStore;
@@ -124,11 +125,25 @@ var handlers = {
   }
 };
 
+var setSecure = function(req, res, next) {
+  if(process.env.PORT == 80) { // is there a better check for production?
+    if(req.headers['x-forwarded-proto']!='https') {
+      res.redirect('https://' + getCallBackUrl(req.url));
+      return;
+    }
+    res.header('Strict-Transport-Security', 'max-age=31536000');
+  }
+  next();
+};
+
 function createServer(args) {
-  app = express.createServer();
+  app = express();
+  app.use(partials());
   app.use(express.bodyParser());
   app.use(express.static(__dirname + '/public'));
   app.set('view engine', 'ejs');
+
+  app.all('*', setSecure);
 
   app.get('/' + endpoints.main, handlers.main);
   app.get('/' + endpoints.install, handlers.install);
