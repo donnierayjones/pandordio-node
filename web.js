@@ -128,7 +128,7 @@ var handlers = {
 var setSecure = function(req, res, next) {
   if(process.env.NODE_ENV == 'production') { // is there a better check for production?
     if(req.headers['x-forwarded-proto']!='https') {
-      res.redirect('https://' + getCallBackUrl(req.url));
+      res.redirect(getCallBackUrl(req.url));
       return;
     }
     res.header('Strict-Transport-Security', 'max-age=31536000');
