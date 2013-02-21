@@ -128,7 +128,7 @@ var handlers = {
 var setSecure = function(req, res, next) {
   if(process.env.NODE_ENV == 'production') { // is there a better check for production?
     if(req.headers['x-forwarded-proto']!='https') {
-      res.redirect(getCallBackUrl(req.url));
+      res.redirect(getServerUrl(req.url));
       return;
     }
     res.header('Strict-Transport-Security', 'max-age=31536000');
@@ -161,7 +161,7 @@ function getRdioClient(store) {
   return new Rdio({
     consumerKey: config.get('consumerKey'),
     consumerSecret: config.get('consumerSecret'),
-    authorizeCallback: getCallBackUrl(endpoints.loginEnd),
+    authorizeCallback: getCallbackUrl(endpoints.loginEnd),
     dataStore: store
   });
 }
@@ -172,12 +172,16 @@ function getStore(req) {
   return store;
 }
 
-function getCallBackUrl(path) {
+function getServerUrl(path) {
   var port = '';
   if(config.get('serverPort') != 80) {
     port = ':' + config.get('serverPort').toString();
   }
   return config.get('serverHostName') + port + '/' + path;
+}
+
+function getCallbackUrl(serverEndpoint) {
+  return getServerUrl('/' + serverEndpoint);
 }
 
 function setUp() {
