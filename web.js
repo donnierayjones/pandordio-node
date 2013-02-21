@@ -126,7 +126,7 @@ var handlers = {
 };
 
 var setSecure = function(req, res, next) {
-  if(process.env.PORT == 80) { // is there a better check for production?
+  if(process.env.NODE_ENV == 'production') { // is there a better check for production?
     if(req.headers['x-forwarded-proto']!='https') {
       res.redirect('https://' + getCallBackUrl(req.url));
       return;
