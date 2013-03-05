@@ -6,12 +6,11 @@ var CookieStore = require('./cookie-store').CookieStore;
 
 var app;
 
+var useSSL = process.env.NODE_ENV == 'production';
+
 var getRequestItems = function(req) {
   if(req.method === 'POST') {
     return req.body;
-  }
-  if(req.method === 'GET') {
-    return req.query;
   }
   return {};
 };
@@ -126,8 +125,8 @@ var handlers = {
 };
 
 var setSecure = function(req, res, next) {
-  if(process.env.NODE_ENV == 'production') { // is there a better check for production?
-    if(req.headers['x-forwarded-proto']!='https') {
+  if(useSSL) {
+    if(req.headers['x-forwarded-proto'] != 'https') {
       res.redirect(getServerUrl(req.url));
       return;
     }
@@ -151,7 +150,6 @@ function createServer(args) {
   app.get('/' + endpoints.loginEnd, handlers.loginEnd);
   app.get('/' + endpoints.logout, handlers.logout);
 
-  app.get('/:method', handlers.proxy);
   app.post('/:method', handlers.proxy);
 
   app.listen(args.port);
@@ -181,7 +179,7 @@ function getServerUrl(path) {
 }
 
 function getCallbackUrl(serverEndpoint) {
-  return getServerUrl('/' + serverEndpoint);
+  return getServerUrl(serverEndpoint);
 }
 
 function setUp() {
