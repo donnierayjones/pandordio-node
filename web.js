@@ -64,7 +64,7 @@ var handlers = {
         res.send('Error beginning request: ' + JSON.stringify(error));
         return;
       }
-      store.write(res, function() {
+      store.write(res, useSSL, function() {
         res.redirect(loginUrl);
       });
     });
@@ -86,7 +86,7 @@ var handlers = {
 
     rdio.completeAuthentication(req.param('oauth_verifier'), function() {
       // Save the auth token to the cookie and then redirect to the main page.
-      store.write(res, function() {
+      store.write(res, useSSL, function() {
         res.redirect('/' + endpoints.main);
       });
     });
@@ -96,7 +96,7 @@ var handlers = {
   logout: function(req, res) {
     var store = getStore(req);
     store.removeAll();
-    store.write(res, function() {
+    store.write(res, useSSL, function() {
       res.redirect('/' + endpoints.main);
     });
   },

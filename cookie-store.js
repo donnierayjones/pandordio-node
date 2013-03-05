@@ -57,13 +57,13 @@ exports.CookieStore.prototype.load = function(req, callback) {
   callback.call({});
 };
 
-exports.CookieStore.prototype.write = function(res, callback) {
+exports.CookieStore.prototype.write = function(res, secure, callback) {
   callback = callback || function() {};
   var expires_ms = 1000 /*ms*/ * 60 /*s*/ * 60 /*m*/ * 24 /*h*/ * 365 /*d*/;
   res.cookie(this.key_, this.store_.stringify(), {
     expires: new Date(Date.now() + expires_ms),
     path: '/',
-    secure: false
+    secure: secure
   });
   callback.call({});
 };
