@@ -44,14 +44,16 @@ exports.CookieStore.prototype.load = function(req, callback) {
   callback = callback || function() {};
   var cookieVal = '{}';
   var cookieStr = req.header('cookie', this.key_ + '=%7B%7D');
+  if(cookieStr !== undefined) {
   var start = cookieStr.indexOf(this.key_ + '=');
-  if (start != -1) {
-    start = start + this.key_.length + 1;
-    var end = cookieStr.indexOf(';', start);
-    if (end == -1) {
-      end = cookieStr.length;
+    if (start != -1) {
+      start = start + this.key_.length + 1;
+      var end = cookieStr.indexOf(';', start);
+      if (end == -1) {
+        end = cookieStr.length;
+      }
+      cookieVal = unescape(cookieStr.substring(start, end));
     }
-    cookieVal = unescape(cookieStr.substring(start, end));
   }
   this.store_ = MemoryStore.parse(cookieVal);
   callback.call({});
